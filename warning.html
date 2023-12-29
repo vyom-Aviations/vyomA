@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warning</title>
+    <script src="warning.js"></script>
+    <link rel="stylesheet" href="warning.css">
+</head>
+<body>
+    <h1 style="text-align: center">Custom/Responsive Modal Popups</h1>
+<p style="text-align: center">Click to alert...</p>
+<!-- begin -->
+
+<!-- begin : links -->
+<div id="alert-link">
+  <a href="#modal" class="open-modal">Open Alert Message</a>
+</div>
+
+<div id="prompt-link">
+  <a href="#prompt" class="open-prompt">Open Prompt</a>
+</div>
+<!-- end : links -->
+
+<!-- modal : start -->
+<div id="modal" class="modal-container">
+  <div class="modal">
+    <h2>Modal Alert</h2>
+    <p>Please be sure to do whatever this modal request asks of you, with no hesitation. Thank you for choosing this modal.</p>
+    <button id="gotit">GOT IT!</button>
+  </div>
+</div>
+<!-- modal : end -->
+
+<div id="prompt" class="prompt-container">
+  <div class="prompt">
+    <h2>Prompt Alert</h2>
+    <input type="text" name="input"><br>
+    <button id="btn-ok">ADD</button>
+    <button id="btn-cancel">CANCEL</button>
+  </div>
+</div>
+</body>
+</html>

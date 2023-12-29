@@ -1,0 +1,72 @@
+$blue: #2971d4
+$purple: purple
+$gray: #e5e5e5
+
+*, div
+  box-sizing: border-box
+  font-family: sans-serif
+  text-align: center
+  
+.modal-container, .prompt-container
+  &:before
+    content: ""
+    background-color: rgba(0,0,0,0.6)
+    display: block
+    position: fixed
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+  &:closed
+    display: none
+  
+.modal, .prompt
+  position: fixed
+  top: 50px
+  left: 0px
+  right: 0px
+  margin: 0 auto
+  display: block
+  background: white
+  padding: 40px
+  width: 600px
+  max-width: 100%
+  z-index: 1
+
+
+button
+  border: none
+  background-color: transparent
+  font-weight: bold
+  color: $blue
+  font-size: 14px
+  padding: 15px
+  cursor: pointer
+  float: right
+  outline: none
+  &:hover
+    background-color: $gray
+  
+input
+  width: 100%
+  outline: none
+  padding: 10px 0
+  margin-bottom: 10px
+  
+button#btn-ok, button#btn-cancel
+  border: none
+  background-color: transparent
+  font-weight: bold
+  color: $blue
+  font-size: 14px
+  padding: 15px
+  cursor: pointer
+  outline: none
+  float: right
+  &:hover
+    background-color: $gray
+  
+button#btn-cancel
+  color: $gray
+  &:hover
+    background-color: transparent
