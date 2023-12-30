@@ -9,15 +9,15 @@ document.addEventListener('DOMContentLoaded', function () {
       // Get geolocation if checkbox is checked
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
-                    // Display location coordinates in a modal
-                    const modal = document.getElementById('locationModal');
-                    const latitudeElement = document.getElementById('latitude');
-                    const longitudeElement = document.getElementById('longitude');
-          
-                    latitudeElement.textContent = 'Latitude: ' + position.coords.latitude;
-                    longitudeElement.textContent = 'Longitude: ' + position.coords.longitude;
-          
-                    modal.style.display = 'block';
+          // Display location coordinates in a modal
+          const modal = document.getElementById('locationModal');
+          const latitudeElement = document.getElementById('latitude');
+          const longitudeElement = document.getElementById('longitude');
+
+          latitudeElement.textContent = 'Latitude: ' + position.coords.latitude;
+          longitudeElement.textContent = 'Longitude: ' + position.coords.longitude;
+
+          modal.style.display = 'block';
 
           // Append latitude and longitude to the form data
           const latitudeInput = document.createElement('input');
