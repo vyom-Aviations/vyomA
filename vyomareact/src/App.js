@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+
+const Coffees = () => {
+  const coffees = [
+    { name: "Fire", image: "images/fire.png" },
+    { name: "Flood", image: "images/flood.png" },
+    { name: "Earthquake", image: "images/earthquake.png" },
+    { name: "Medical Emergency", image: "images/medical.png" },
+    { name: "Food/Famine Supplies", image: "images/food.png" },
+    { name: "All-In-One Medical Kit", image: "images/ain.png" },
+  ];
+
+  useEffect(() => {
+    showCoffees();
+  }, []);
+
+  const showCoffees = () => {
+    return coffees.map(({ name, image }) => (
+      <div className="card">
+        <img className="card--avatar" src={image} alt={name} />
+        <h1 className="card--title">{name}</h1>
+        <a className="card--link" href="info.html">
+          Contact
+        </a>
+      </div>
+    ));
+  };
+
+  return <div className="container">{showCoffees()}</div>;
+};
+
+export default Coffees;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+const [backendData, setBackendData] = useState([{}])
+
+useEffect(() => {
+  fetch('/api').then(
+    response => response.json()
+  ).then(
+  data => {
+    setBackendData(data)
+  }
+  )
+}, [])}
