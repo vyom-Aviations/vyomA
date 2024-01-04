@@ -22,6 +22,17 @@ connection.connect((error) => {
   console.log('Connected to MySQL server');
 });
 
+const rateLimit = require('express-rate-limit');
+
+// Create a rate limiter with a maximum of 100 requests per hour
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 100
+});
+
+// Apply the rate limiter to all routes
+app.use(limiter);
+
 // Create an API endpoint to handle form submissions
 app.post('/form', (req, res) => {
   const { name, email, city, state, coordinates } = req.body;
