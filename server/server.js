@@ -3,12 +3,13 @@ const mysql = require('mysql');
 
 const app = express();
 
-// Create a MySQL connection
+require('dotenv').config(); // Load environment variables from .env file
+
 const connection = mysql.createConnection({
-  host: 'localhost', // replace with your MySQL host
-  user: 'root', // replace with your MySQL user
-  password: 'mysqlkilo', // replace with your MySQL password
-  database: 'vyom' // replace with your MySQL database name
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
 });
 
 // Connect to the MySQL server
