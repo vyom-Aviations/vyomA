@@ -33,6 +33,12 @@ const limiter = rateLimit({
 // Apply the rate limiter to all routes
 app.use(limiter);
 
+// Middleware to parse JSON-encoded bodies
+app.use(express.json());
+
+// Middleware to parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
 // Create an API endpoint to handle form submissions
 app.post('/form', (req, res) => {
   const { name, email, city, state, coordinates } = req.body;
@@ -55,7 +61,17 @@ app.post('/form', (req, res) => {
 
 // Create another API endpoint
 app.get('/api', (req, res) => {
-  res.json({ "users": ["userOne", "userTwo", "userThree"] });
+  // Fetch data from the database or perform other operations as needed
+  // Example: Fetch users from the database
+  connection.query('SELECT * FROM users', (error, results) => {
+    if (error) {
+      console.error('Error fetching users from MySQL:', error);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    res.json(results);
+  });
 });
 
 // Start the server
