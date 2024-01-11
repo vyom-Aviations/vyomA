@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" lang="en">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -15,7 +15,7 @@
         Emergency Contact Form
       </div>
 
-      <form class="contactForm" action="https://example.com/submit" method="POST" enctype="multipart/form-data">
+      <form class="contactForm" action="submitted.html" method="POST" enctype="multipart/form-data">
         <div class="form_wrap">
           <div class="input_grp">
             <div class="input_wrap">
@@ -54,14 +54,40 @@
       </form>
     </div>
   </div>
-
   <script src="../src/info.js"></script>
   <script>
-    const form = document.getElementsByClassName('contactForm')[0];
-    form.addEventListener('submit', function (event) {
+    const form = document.querySelector('#myForm');
+
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
+
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        city: form.city.value,
+        state: form.state.value,
+        coordinates: form.coordinates.value
+      };
+
+      fetch('/form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(data); // Output: "Form data inserted successfully"
+          // Do something with the response, such as displaying a success message to the user
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle the error, such as displaying an error message to the user
+        });
     });
   </script>
+  
 </body>
 
 </html>
