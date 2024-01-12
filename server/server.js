@@ -1,10 +1,9 @@
 const express = require('express');
 const mysql = require('mysql');
 const https = require('https');
-const fs = require('fs');
 const winston = require('winston');
 const helmet = require('helmet');
-
+const http = require('http');
 const app = express();
 
 require('dotenv').config(); // Load environment variables from .env file
@@ -50,6 +49,7 @@ app.use(helmet());
 
 app.post('/form', (req, res) => {
   const { name, email, city, state, coordinates } = req.body;
+  console.log('Form submission info:', name, email, city, state, coordinates);
 
   const query = `INSERT INTO users (name, email) VALUES (?, ?);
                  INSERT INTO addresses (city, state) VALUES (?, ?);
@@ -97,12 +97,6 @@ app.get('/api', (req, res) => {
     });
   });
 });
-
-const options = {
-  key: fs.readFileSync(process.env.PRIVATE_KEY_PATH),
-  cert: fs.readFileSync(process.env.CERTIFICATE_PATH)
-};
-
-https.createServer(options, app).listen(3000, () => {
+http.createServer(app).listen(3000, () => {
   logger.info('Server listening on port 3000');
 });
