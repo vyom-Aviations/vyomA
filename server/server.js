@@ -1,102 +1,16 @@
-const express = require('express');
-const mysql = require('mysql');
-const https = require('https');
-const winston = require('winston');
-const helmet = require('helmet');
-const http = require('http');
-const app = express();
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
-require('dotenv').config(); // Load environment variables from .env file
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://support.google.com/firebase/answer/7015592
+const firebaseConfig = {
+    FIREBASE_CONFIGURATION
+};
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.simple(),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: 'logs.log' })
-  ]
-});
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
 
-pool.getConnection((error, connection) => {
-  if (error) {
-    logger.error('Error connecting to MySQL:', error);
-    return;
-  }
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
 
-  logger.info('Connected to MySQL server');
-  connection.release();
-});
-
-const rateLimit = require('express-rate-limit');
-
-const limiter = rateLimit({
-  windowMs: process.env.RATE_LIMIT_WINDOW_MS,
-  max: process.env.RATE_LIMIT_MAX
-});
-
-app.use(limiter);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(helmet());
-
-app.post('/form', (req, res) => {
-  const { name, email, city, state, coordinates } = req.body;
-  console.log('Form submission info:', name, email, city, state, coordinates);
-
-  const query = `INSERT INTO users (name, email) VALUES (?, ?);
-                 INSERT INTO addresses (city, state) VALUES (?, ?);
-                 INSERT INTO locations (coordinates) VALUES (?);`;
-
-  pool.getConnection((error, connection) => {
-    if (error) {
-      logger.error('Error getting connection from pool:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-
-    connection.query(query, [name, email, city, state, coordinates], (error, results) => {
-      connection.release();
-
-      if (error) {
-        logger.error('Error inserting form data into MySQL:', error);
-        res.status(500).send('Error inserting form data into MySQL: ' + error.message);
-        return;
-      }
-
-      res.send('Form data inserted successfully');
-    });
-  });
-});
-
-app.get('/api', (req, res) => {
-  pool.getConnection((error, connection) => {
-    if (error) {
-      logger.error('Error getting connection from pool:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-
-    connection.query('SELECT * FROM users', (error, results) => {
-      connection.release();
-
-      if (error) {
-        logger.error('Error fetching users from MySQL:', error);
-        res.status(500).send('Error fetching users from MySQL: ' + error.message);
-        return;
-      }
-
-      res.json(results);
-    });
-  });
-});
-http.createServer(app).listen(3000, () => {
-  logger.info('Server listening on port 3000');
-});
